@@ -1,3 +1,5 @@
+package com.wonkybits.ShiftCipher;
+
 /**
  * Created by upxs078 on 5/24/16.
  */
@@ -5,17 +7,22 @@ public class ShiftCipher {
     // shift factor
     private int s;
 
-    private String plaintext;
-    private String ciphertext;
+    private String message;
+    private String output;
 
     // divisor
     private final int N = 26;
 
     private final char[] ALPHABET = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
+    public ShiftCipher() {
+        setS(0);
+        setMessage(null);
+    }
+
     public ShiftCipher(int s, String plaintext) {
         setS(s);
-        setPlaintext(plaintext);
+        setMessage(plaintext);
     }
 
     public int getS() {
@@ -26,32 +33,32 @@ public class ShiftCipher {
         this.s = s;
     }
 
-    public String getPlaintext() {
-        return plaintext;
+    public String getMessage() {
+        return message;
     }
 
-    public void setPlaintext(String plaintext) {
-        this.plaintext = plaintext;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String encipher() {
-        ciphertext = "";
+        this.clearOutput();
         int idx = 0;
 
-        for(int i = 0; i < plaintext.length(); i++) {
-            idx = find(plaintext.charAt(i));
-            ciphertext += ALPHABET[this.mod((idx + s), N)];
+        for(int i = 0; i < this.getMessage().length(); i++) {
+            idx = find(this.getMessage().charAt(i));
+            output += ALPHABET[this.mod((idx + s), N)];
         }
 
-        return ciphertext;
+        return output;
     }
 
     public String decipher() {
-        String output = "";
+        this.clearOutput();
         int idx = 0;
 
-        for(int i = 0; i < ciphertext.length(); i++) {
-            idx = find(ciphertext.charAt(i));
+        for(int i = 0; i < this.getMessage().length(); i++) {
+            idx = find(this.getMessage().charAt(i));
             output += ALPHABET[this.mod((idx - s), N)];
         }
 
@@ -67,5 +74,9 @@ public class ShiftCipher {
 
     private int mod(int a, int n) {
         return ((a % n + n) % n);
+    }
+
+    private void clearOutput() {
+        output = "";
     }
 }
